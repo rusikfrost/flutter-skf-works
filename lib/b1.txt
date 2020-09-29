@@ -1,0 +1,300 @@
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        backgroundColor: Colors.transparent,
+        //primarySwatch: Colors.blue,
+        //visualDensity: VisualDensity.adaptivePlatformDensity,
+      ),
+      home: MyHomePage(title: 'Flutter Demo Home Page'),
+    );
+  }
+}
+
+class MyHomePage extends StatefulWidget {
+  MyHomePage({Key key, this.title}) : super(key: key);
+
+  final String title;
+
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  int _counter = 0;
+  String page = 'home';
+  List columns = [
+    {'title': 'ФИО студента'},
+    {'title': 'Год набора'},
+    {'title': 'Код группы'},
+    {'title': 'Номер зачетки'},
+    {'title': 'Email'},
+  ];
+  List allRows = [
+    {
+      'name': 'Иванов Иван',
+      'year': 2017,
+      'group': 'В-31',
+      'id': 'ЗБВТ-00001',
+      'email': 'ivanid@gmail.com'
+    },
+    {
+      'name': 'Васильев Василий',
+      'year': 2016,
+      'group': 'В-41',
+      'id': 'ЗБВТ-00002',
+      'email': 'vas@gmail.com'
+    },
+  ];
+
+  //List searchKeys = [];
+
+  List rows = [
+    {
+      'name': 'Иванов Иван',
+      'year': 2017,
+      'group': 'В-31',
+      'id': 'ЗБВТ-00001',
+      'email': 'ivanid@gmail.com'
+    },
+    {
+      'name': 'Васильев Василий',
+      'year': 2016,
+      'group': 'В-41',
+      'id': 'ЗБВТ-00002',
+      'email': 'vas@gmail.com'
+    },
+  ];
+/*
+  Map searchKeys = {};
+
+  void _sortTable(String key, String value) {
+    setState(() {
+      searchKeys[key] = value;
+    });
+    List newList = [];
+    for (var row in rows) {
+      //print(row);
+
+      for (var searchKey in searchKeys.keys) {
+        if ('${row[searchKey]}' != '' &&
+            '${row[searchKey]}'.indexOf('${searchKeys[searchKey]}') != -1) {
+          newList.add(row);
+          print('${searchKeys[searchKey]} ${row[searchKey]}');
+        }
+      }
+
+      //if () {
+
+      //}
+    }
+
+    setState(() {
+      rows = newList;
+    });
+  }
+*/
+  /*
+  void _sortTable(String key, String value) {
+    searchKeys.length == 0 ? searchKeys.length = allRows[0].length : '';
+    List newList = [];
+    for (var i = 0; i < allRows.length; i++) {
+      //}
+      //for (var row in allRows) {
+      for (var searchKey in searchKeys) {
+        print('${allRows[i][key]}, $searchKey');
+        if ('${allRows[i][key]}'.indexOf('${searchKeys[i]}') != -1 &&
+            searchKeys[i] != null) {
+          try {
+            //print(allRows[i]);
+            newList.add(allRows[i]);
+          } catch (e) {
+            print(e);
+          }
+        }
+      }
+    }
+
+    setState(() {
+      rows = newList;
+    });
+  }
+*/
+  void _incrementCounter() {
+    setState(() {
+      _counter++;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      //appBar: AppBar(
+      //  title: Text(widget.title),
+      //),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            _navigationMenu(),
+            //_dataTable(),
+            //_dataTable2(),
+            //_dataTable(),
+            //_searchDataTable()
+          ],
+        ),
+      ),
+      /*floatingActionButton: FloatingActionButton(
+        onPressed: _incrementCounter,
+        tooltip: 'Increment',
+        child: Icon(Icons.add),
+      ),*/
+    );
+  }
+
+  Widget _navigationMenu() {
+    List data = [
+      {'name': 'Главная', 'page': 'home'},
+      {'name': 'Учебная деятельность', 'page': 'activities'},
+      {'name': 'Студенты', 'page': 'students'},
+      {'name': 'Преподаватели', 'page': 'lecturers'},
+      {'name': 'Личный кабинет', 'page': 'cabinet'},
+      {'name': 'МРС', 'page': 'rating'},
+    ];
+    return Row(
+        children: List.generate(data.length, (i) {
+      return InkWell(
+        child: Container(
+            decoration: BoxDecoration(
+                border: Border(
+                    top: BorderSide(
+                        color: page == data[i]['page']
+                            ? Colors.blue
+                            : Colors.blueGrey,
+                        width: 7.0))),
+            child: Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Text(
+                '${data[i]['name']}',
+                //'${searchKeys}',
+                style: TextStyle(
+                    color: page == data[i]['page']
+                        ? Colors.blueGrey
+                        : Colors.black),
+              ),
+            )),
+        onTap: () {
+          setState(() {
+            page = data[i]['page'];
+          });
+        },
+      );
+    }));
+  }
+
+/*
+  Widget _dataTable() {
+    var keys = allRows[0].keys.toList();
+    return Container(
+        height: 500,
+        child: ListView(children: <Widget>[
+          SizedBox(height: 12),
+          DataTable(
+            columns: List.generate(columns.length, (i) {
+              //print(keys);
+              return DataColumn(
+                  label: Column(children: [
+                //Text('${columns[i]['title']}'),
+                Container(
+                    //margin: EdgeInsets.all(4),
+                    color: Colors.grey,
+                    width: 120,
+                    //height: 128,
+
+                    child: TextField(
+                      style: TextStyle(fontSize: 14),
+                      decoration: InputDecoration(
+                        //border: OutlineInputBorder(),
+                        labelText: '${columns[i]['title']}',
+                      ),
+                      onChanged: (text) {
+                        //print(keys[i]);
+                        _sortTable(keys[i], text);
+                      },
+                    )),
+                //SizedBox(height: 12),
+              ]));
+            }),
+            rows: List.generate(rows.length, (i) {
+              return DataRow(cells: [
+                DataCell(Text('${rows[i]['name']}')),
+                DataCell(Text('${rows[i]['year']}')),
+                DataCell(Text('${rows[i]['group']}')),
+                DataCell(Text('${rows[i]['id']}')),
+                DataCell(Text('${rows[i]['email']}')),
+              ]);
+            }),
+          ),
+        ]));
+  }
+
+  Widget _searchDataTable() {
+    return Container(
+      child: Row(
+        children: [Container(height: 100, width: 100, child: TextField())],
+      ),
+    );
+  }
+
+  Widget _dataTable2() {
+    return Column(children: <Widget>[
+      Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Text(
+          "Table",
+          textScaleFactor: 2,
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+      ),
+      Table(
+          textDirection: TextDirection.rtl,
+          defaultVerticalAlignment: TableCellVerticalAlignment.bottom,
+          border: TableBorder.all(width: 2.0, color: Colors.red),
+          children: List.generate(rows.length, (i) {
+            return
+                //header
+                TableRow(children: [
+              Text(
+                '${rows[i]["name"]}',
+                textScaleFactor: 1.5,
+              ),
+              Text('${rows[i]["year"]}', textScaleFactor: 1.5),
+              Text('${rows[i]["group"]}', textScaleFactor: 1.5),
+              Text('${rows[i]["id"]}', textScaleFactor: 1.5),
+              Text('${rows[i]["email"]}', textScaleFactor: 1.5),
+            ]);
+          })),
+    ]);
+  }
+  */
+}
+
+/*
+            TableRow(children: [
+              Text(
+                "Education",
+                textScaleFactor: 1.5,
+              ),
+              Text("Institution name", textScaleFactor: 1.5),
+              Text("University", textScaleFactor: 1.5),
+            ]),
+            */
